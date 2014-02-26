@@ -10,7 +10,7 @@ class DrawPanel extends JPanel implements KeyListener{
 	float y = 50;
 	int reverse = 1;
 	float yVelocity = 0;
-	float yAcceleration = .5f;
+	float yAcceleration = 0.5f;
 	
     public void paintComponent(Graphics g)
     { 
