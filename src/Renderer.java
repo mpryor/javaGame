@@ -1,23 +1,35 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Vector;
+
 import javax.swing.JPanel;
 
 class Renderer extends JPanel{
 	
+	Vector<drawableObject> itemList = new Vector<drawableObject>(10,2);
 	private static final long serialVersionUID = 1L;	
-	final int ballWidth = 50; 
-	final int ballHeight = 50;
 	Game myGame;
 	Renderer(Game currentGame)
 	{
 		myGame = currentGame;
+		itemList.add(myGame.theBall);
+		itemList.add(myGame.theBlock);
+		itemList.add(myGame.topBlock);
 	}
+	//Fills the background color
+	public void colorBG(Graphics g)
+	{
+		g.setColor(Color.BLUE);
+		g.fillRect(0,0,this.getWidth(),this.getHeight());
+	}
+	//Primary draw method
 	@Override
     public void paintComponent(Graphics g)
     { 
-      g.setColor(Color.WHITE);
-      g.fillRect(0,0,this.getWidth(),this.getHeight());
-      g.setColor(Color.GREEN);
-      g.fillOval(myGame.x,(int)myGame.y,ballWidth,ballHeight);
-    }         
+	  colorBG(g);
+      for(int i = 0; i < itemList.size(); i++)
+      {
+    	  itemList.elementAt(i).draw(g);
+      }
+    }        
 }

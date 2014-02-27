@@ -1,20 +1,33 @@
+import java.util.Vector;
+
 public class Game {
 	
-	int x = 221;
-	float y = 50;
-	float yVelocity = 0;
-	float yAcceleration = 0.5f;
-	boolean isJumping = false;
-	
+	Vector<gravityObject> fallingObjects = new Vector<gravityObject>(10,2);
+	Vector<collisionObject> collidingObjects = new Vector<collisionObject>(10,2);
+	Ball theBall = new Ball();	
+	Block topBlock = new Block();
+	Block theBlock = new Block();
+	Game()
+	{
+		fallingObjects.add(theBall);
+		collidingObjects.add(theBall);
+		collidingObjects.add(theBlock);
+		topBlock.y = 50;
+		collidingObjects.add(topBlock);
+		
+	}
 	public void update()
 	{
-		yVelocity += yAcceleration;
-		if(isJumping)
-		{
-			yVelocity -= 20;
-			isJumping = false;
+		for(int i = 0; i < fallingObjects.size(); i++)
+		{			
+			fallingObjects.elementAt(i).applyGravity();			
 		}
-		y += yVelocity;
-	}
+		for(int i = 0; i < collidingObjects.size(); i++)
+		{
+			collidingObjects.elementAt(i).checkColliding(collidingObjects);
+		}
 
+
+	}
+	
 }

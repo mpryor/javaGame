@@ -13,7 +13,8 @@ public class Main
 	{
 		@Override
 		public void keyPressed(KeyEvent e) {
-			myGame.isJumping = true;
+			if(e.getKeyChar() == ' ')
+				myGame.theBall.isJumping = true;
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {}
