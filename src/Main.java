@@ -15,9 +15,23 @@ public class Main
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyChar() == ' ')
 				myGame.theBall.isJumping = true;
+			if(e.getKeyCode() == KeyEvent.VK_LEFT)
+				myGame.theBall.moveLeft = true;
+			if(e.getKeyCode() == KeyEvent.VK_RIGHT)
+			{
+				myGame.theBall.moveRight = true;
+			}
 		}
 		@Override
-		public void keyReleased(KeyEvent e) {}
+		public void keyReleased(KeyEvent e) {
+			if(e.getKeyCode() == KeyEvent.VK_LEFT)
+				myGame.theBall.moveLeft = false;
+			if(e.getKeyCode() == KeyEvent.VK_RIGHT)
+			{
+				myGame.theBall.moveRight = false;
+			}
+		}
+		
 		@Override
 		public void keyTyped(KeyEvent e) {}		
 	};

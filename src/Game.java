@@ -1,33 +1,38 @@
 import java.util.Vector;
 
 public class Game {
-	
-	Vector<gravityObject> fallingObjects = new Vector<gravityObject>(10,2);
-	Vector<collisionObject> collidingObjects = new Vector<collisionObject>(10,2);
+
+	Vector<movingObject> movingList = new Vector<movingObject>(10,2);
+	Vector<collisionObject> collisionList = new Vector<collisionObject>(10,2);
+	Vector<collisionObject> nonStaticObjects = new Vector<collisionObject>(10,2);
+	Vector<drawableObject> drawList = new Vector<drawableObject>(10,2);
 	Ball theBall = new Ball();	
-	Block topBlock = new Block();
 	Block theBlock = new Block();
+	
 	Game()
 	{
-		fallingObjects.add(theBall);
-		collidingObjects.add(theBall);
-		collidingObjects.add(theBlock);
-		topBlock.y = 50;
-		collidingObjects.add(topBlock);
-		
+		drawList.add(theBall);
+		drawList.add(theBlock);
+		movingList.add(theBall);
+		collisionList.add(theBall);
+		collisionList.add(theBlock);
+		nonStaticObjects.add(theBall);		
 	}
+
 	public void update()
 	{
-		for(int i = 0; i < fallingObjects.size(); i++)
+		for(int i = 0; i < movingList.size(); i++)
 		{			
-			fallingObjects.elementAt(i).applyGravity();			
+			movingList.elementAt(i).update();		
 		}
-		for(int i = 0; i < collidingObjects.size(); i++)
+		for(int i = 0; i < nonStaticObjects.size(); i++)
 		{
-			collidingObjects.elementAt(i).checkColliding(collidingObjects);
+			nonStaticObjects.elementAt(i).checkColliding(collisionList, drawList);
 		}
-
-
+		for(int i = 0; i < movingList.size(); i++)
+		{
+			movingList.elementAt(i).move();
+		}
 	}
-	
+
 }

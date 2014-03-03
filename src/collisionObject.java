@@ -5,47 +5,78 @@ public class collisionObject {
 	float y = 0;
 	float yVelocity = 0;
 	float yAcceleration = 0;
+	float xVelocity = 0;
+	float xAcceleration = 0;
 	int boundingWidth = 0;
 	int boundingHeight = 0;
 
-	public boolean checkColliding(Vector<collisionObject> collisionList) {
+	public void checkColliding(Vector<collisionObject> collisionList, Vector<drawableObject> drawList) {
 		for(int i = 0; i < collisionList.size(); i++)
 		{
 			if(collisionList.elementAt(i) != this)
 			{
-				int objectOneFinalX = this.x;
+				int objectOneFinalX = (int)(this.x + this.xVelocity);
 				int objectOneFinalY = (int)(this.y + this.yVelocity);
-				int objectTwoFinalX = collisionList.elementAt(i).x;
+				int objectOneCurrentY = (int)this.y;
+				int objectOneCurrentX = (int)this.x;
+				
+				int objectTwoCurrentX = (int)collisionList.elementAt(i).x;
+				int objectTwoCurrentY = (int)collisionList.elementAt(i).y;
+				int objectTwoFinalX = (int)(collisionList.elementAt(i).x + collisionList.elementAt(i).xVelocity);
 				int objectTwoFinalY = (int)(collisionList.elementAt(i).y + collisionList.elementAt(i).yVelocity);
 				
-				boolean isColliding = (Math.abs(objectOneFinalX - objectTwoFinalX) * 2 < (this.boundingWidth + collisionList.elementAt(i).boundingWidth)) && 
+				   
+				
+				// horizontal collision is where the Ys are already colliding, and the xVelocity causes a collision.
+				boolean horizontalCollision = (Math.abs(objectOneFinalX - objectTwoFinalX) * 2 < (this.boundingWidth + collisionList.elementAt(i).boundingWidth)) && 
+						(Math.abs(objectOneCurrentY - objectTwoCurrentY) * 2 < (this.boundingHeight + collisionList.elementAt(i).boundingHeight));
+				boolean verticalCollision = (Math.abs(objectOneCurrentX - objectTwoCurrentX) * 2 < (this.boundingWidth + collisionList.elementAt(i).boundingWidth)) && 
 						(Math.abs(objectOneFinalY - objectTwoFinalY) * 2 < (this.boundingHeight + collisionList.elementAt(i).boundingHeight));
-
-				if(isColliding)
+				if(this instanceof Ball)
 				{
-					if(this instanceof Ball)
-					{
-						
-						if(this.yVelocity > 0)
-						{
-							this.y = collisionList.elementAt(i).y - (collisionList.elementAt(i).boundingHeight/2) - (this.boundingHeight/2);
-							//this.yVelocity = -.6f*this.yVelocity;		
-						}
-						else
-						{
-							this.y = collisionList.elementAt(i).y + (collisionList.elementAt(i).boundingHeight/2) + (this.boundingHeight/2);
-							//this.yVelocity = -.2f*this.yVelocity;		
-						}		
-						//if((Math.abs(this.yVelocity)) < 1)
-							this.yVelocity = 0.0f;
-						collisionList.elementAt(i).yAcceleration = 0;
-						collisionList.elementAt(i).yVelocity = 0;
+					if(horizontalCollision)
+					{				
+							if(collisionList.elementAt(i) instanceof Block)
+							{
+								collisionList.remove(i);
+								drawList.remove(i);
+							}
+							else
+							{
+								if(this.xVelocity > 0)
+								{
+									this.x = collisionList.elementAt(i).x - (collisionList.elementAt(i).boundingWidth/2) - (this.boundingWidth/2);
+								}
+								else
+								{
+									this.x = collisionList.elementAt(i).x + (collisionList.elementAt(i).boundingWidth/2) + (this.boundingWidth/2);
+								}	
+								this.xVelocity = 0;
+							}
 					}
-					return true;
-				}					
+					if(verticalCollision)
+					{
+							if(collisionList.elementAt(i) instanceof Block)
+							{
+								collisionList.remove(i);
+								drawList.remove(i);
+							}
+							else
+							{
+								if(this.yVelocity > 0)
+								{
+									this.y = collisionList.elementAt(i).y - (collisionList.elementAt(i).boundingHeight/2) - (this.boundingHeight/2);
+								}
+								else
+								{
+									this.y = collisionList.elementAt(i).y + (collisionList.elementAt(i).boundingHeight/2) + (this.boundingHeight/2);
+								}								 
+								this.yVelocity = 0.0f;
+							}
+					}	
+				}
 			}				
 		}
-		return false;
 	}
 }
 
