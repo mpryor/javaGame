@@ -13,9 +13,9 @@ public class Ball extends collisionObject implements drawableObject, movingObjec
 	{
 		x = 246;
 		y = 200;
-		yVelocity = 0;
-		xAcceleration = -.5f;
-		yAcceleration = .5f;
+		yVelocity = 5;
+		xAcceleration = 0;
+		yAcceleration = 0;
 		boundingWidth = 50;
 		boundingHeight = 50;
 	}
@@ -57,10 +57,30 @@ public class Ball extends collisionObject implements drawableObject, movingObjec
 	}
 
 	@Override
-	public void move() {
-		x += xVelocity;
-		y += yVelocity;
-		
-	}
 	
+	public void move() {
+		x += xVelocity;		
+		y += yVelocity;
+		int leftSide = x - boundingWidth/2;
+		int rightSide = x + boundingWidth/2;
+		float bottom = y + boundingHeight / 2;
+		float top = y - boundingHeight / 2;
+		if((rightSide >= 500)||(leftSide <= 0))
+		{
+			if(leftSide <= 0)
+				x = boundingWidth / 2;
+			else
+				x = 500 - boundingWidth / 2;
+			xVelocity = -xVelocity;
+		}
+		if((bottom >= 500)||(top <= 0))
+		{
+			if(top <= 0)
+				y = boundingHeight /2;
+			else
+				y = 500 - boundingHeight / 2;			
+			yVelocity = -yVelocity;
+		}
+		
+	}	
 }

@@ -12,24 +12,18 @@ public class Main
 	static KeyListener inputGrabber = new KeyListener()
 	{
 		@Override
-		public void keyPressed(KeyEvent e) {
-			if(e.getKeyChar() == ' ')
-				myGame.theBall.isJumping = true;
+		public void keyPressed(KeyEvent e) {				
 			if(e.getKeyCode() == KeyEvent.VK_LEFT)
-				myGame.theBall.moveLeft = true;
+				myGame.thePaddle.movingLeft = true;
 			if(e.getKeyCode() == KeyEvent.VK_RIGHT)
-			{
-				myGame.theBall.moveRight = true;
-			}
+				myGame.thePaddle.movingRight = true;
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
 			if(e.getKeyCode() == KeyEvent.VK_LEFT)
-				myGame.theBall.moveLeft = false;
+				myGame.thePaddle.movingLeft = false;
 			if(e.getKeyCode() == KeyEvent.VK_RIGHT)
-			{
-				myGame.theBall.moveRight = false;
-			}
+				myGame.thePaddle.movingRight = false;
 		}
 		
 		@Override
@@ -53,15 +47,16 @@ public class Main
 	
 	public static void setUpGui()
 	{ 
-		final int WINDOWWIDTH = 500;
+		final int WINDOWWIDTH = 600;
 		final int WINDOWHEIGHT = 500;
         gameRenderer.addKeyListener(inputGrabber);
-        gameRenderer.setFocusable(true);        
+        gameRenderer.setFocusable(true); 
         JFrame gameWindow=new JFrame();
-        gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);    
+        gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameWindow.add(gameRenderer);
         gameWindow.setSize(WINDOWWIDTH,WINDOWHEIGHT);
         gameWindow.setVisible(true);
+        gameWindow.setResizable(false);
 	}
 }
 
