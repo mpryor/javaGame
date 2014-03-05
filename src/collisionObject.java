@@ -71,7 +71,6 @@ public class collisionObject {
 	{
 		int distanceFromCenter = otherObject.x - this.x;
 		float angleFactor = (float)distanceFromCenter / ((myGame.theBall.boundingWidth / 2) + (myGame.thePaddle.boundingWidth / 2));
-		System.out.println(angleFactor);
 		this.xVelocity -= (angleFactor * 5.0f) ;			
 	}
 

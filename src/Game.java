@@ -6,9 +6,12 @@ public class Game {
 	Vector<collisionObject> collisionList = new Vector<collisionObject>(10,2);
 	Vector<collisionObject> nonStaticObjects = new Vector<collisionObject>(10,2);
 	Vector<drawableObject> drawList = new Vector<drawableObject>(10,2);
-	Ball theBall = new Ball();	
+	Ball theBall = new Ball(this);	
 	Paddle thePaddle = new Paddle();
+	final int MAXLIVES = 3;
 	int blocksDestroyed = 0;
+	int lives = MAXLIVES;
+
 	
 	Game()
 	{
@@ -20,6 +23,37 @@ public class Game {
 		collisionList.add(thePaddle);
 		nonStaticObjects.add(theBall);			
 		addBlocks(collisionList, drawList);
+	}
+	
+	public void reset()
+	{
+		thePaddle.reset();
+		theBall.reset();
+		if(lives == 0)
+		{
+			gameOver();
+		}
+		else
+			lives--;
+
+	}
+	public void gameOver()
+	{
+		drawList.removeAll(drawList);
+		collisionList.removeAll(collisionList);
+		movingList.removeAll(movingList);
+		
+		drawList.add(theBall);
+		drawList.add(thePaddle);
+		movingList.add(theBall);
+		movingList.add(thePaddle);
+		collisionList.add(theBall);
+		collisionList.add(thePaddle);
+		nonStaticObjects.add(theBall);			
+		addBlocks(collisionList, drawList);
+		lives = MAXLIVES;
+		blocksDestroyed = 0;
+		
 	}
 
 	public void update()

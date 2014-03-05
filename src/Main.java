@@ -6,7 +6,10 @@ import javax.swing.*;
 
 public class Main
 {
+	final static int WINDOWWIDTH = 600;
+	final static int WINDOWHEIGHT = 500;
 	static Game myGame = new Game();
+	
 	static Renderer gameRenderer = new Renderer(myGame);
 	
 	static KeyListener inputGrabber = new KeyListener()
@@ -33,7 +36,7 @@ public class Main
 	public static void main(String[] args)
 	{
     	setUpGui();
-    	Timer myTimer = new Timer(25, new ActionListener(){
+    	Timer myTimer = new Timer(20, new ActionListener(){
     		@Override
     		public void actionPerformed(ActionEvent arg0) {    			
     		//Game Loop start
@@ -43,20 +46,19 @@ public class Main
     		}
     	});
     	myTimer.start();
-	}
+	} 
 	
 	public static void setUpGui()
 	{ 
-		final int WINDOWWIDTH = 600;
-		final int WINDOWHEIGHT = 500;
         gameRenderer.addKeyListener(inputGrabber);
         gameRenderer.setFocusable(true); 
+        gameRenderer.setDoubleBuffered(true);
         JFrame gameWindow=new JFrame();
         gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        gameWindow.add(gameRenderer);
+        gameWindow.getContentPane().add(gameRenderer);
         gameWindow.setSize(WINDOWWIDTH,WINDOWHEIGHT);
-        gameWindow.setVisible(true);
-        gameWindow.setResizable(false);
+        gameWindow.setResizable(false);  
+        gameWindow.setVisible(true);      
 	}
 }
 

@@ -1,5 +1,5 @@
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 public interface drawableObject {
-	public void draw(Graphics g);
+	public void draw(Graphics2D g2);
 }
