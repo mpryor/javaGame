@@ -60,11 +60,11 @@ public class Ball extends collisionObject implements drawableObject, movingObjec
 			float magnetismFactor = (float)Math.abs(myGame.thePaddle.x - myGame.theBall.x) / (float)myGame.width;
 			if((myGame.thePaddle.x - myGame.theBall.x) > 0)
 			{
-				xVelocity = 30 * magnetismFactor;
+				xVelocity = 20 * magnetismFactor;
 			}
 			else if((myGame.thePaddle.x - myGame.theBall.x) < 0)
 			{
-				xVelocity = -30 * magnetismFactor;
+				xVelocity = -20 * magnetismFactor;
 			}
 			else
 			{
