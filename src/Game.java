@@ -1,4 +1,13 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.Vector;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Game {
 
@@ -7,14 +16,53 @@ public class Game {
 	Vector<collisionObject> nonStaticObjects = new Vector<collisionObject>(10,2);
 	Vector<drawableObject> drawList = new Vector<drawableObject>(10,2);
 	Ball theBall = new Ball(this);	
-	Paddle thePaddle = new Paddle();
+	Paddle thePaddle = new Paddle(this);
+	boolean magnetism = false;
 	final int MAXLIVES = 3;
 	int blocksDestroyed = 0;
+	int numberOfBlocks;
 	int lives = MAXLIVES;
+	int width;
+	int height;	
 
-	
-	Game()
+	public enum SoundEffect
 	{
+		BLOCK("hit.wav"),
+		PADDLE("Paddle.wav"),
+		DEATH("Death.wav");
+		
+		private Clip clip;
+		
+		SoundEffect(String soundFileName) {
+		try {
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(soundFileName).getAbsoluteFile());
+	        clip = AudioSystem.getClip();
+	        clip.open(audioInputStream);
+	      } catch (UnsupportedAudioFileException e) {
+	      } catch (IOException e) {
+	      } catch (LineUnavailableException e) {
+	      }
+	   }
+		
+	   public void play() 
+	   {		    	 
+		   clip.stop();
+		   clip.setFramePosition(0); // rewind to the beginning
+		   FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		   gainControl.setValue(-20.0f); // Reduce volume by 10 decibels.
+		   clip.start();     // Start playing
+	   }	   
+		   // Satic method to pre-load all the sound files.
+	   static void init() {
+		   values();
+	   }
+	}
+	
+	Game(int currWidth, int currHeight)
+	{
+		width = currWidth;
+		height = currHeight;
+		SoundEffect.init();
 		drawList.add(theBall);
 		drawList.add(thePaddle);
 		movingList.add(theBall);
@@ -22,11 +70,12 @@ public class Game {
 		collisionList.add(theBall);
 		collisionList.add(thePaddle);
 		nonStaticObjects.add(theBall);			
-		addBlocks(collisionList, drawList);
+		addBlocks(collisionList, drawList);		
 	}
 	
 	public void reset()
 	{
+		SoundEffect.DEATH.play();
 		thePaddle.reset();
 		theBall.reset();
 		if(lives == 0)
@@ -70,26 +119,37 @@ public class Game {
 		{
 			movingList.elementAt(i).move();
 		}
+		if(numberOfBlocks == 0)
+		{
+			addBlocks(collisionList,drawList);
+			thePaddle.reset();
+			theBall.reset();
+			lives++;
+		}
+			
 	}
 	
 	public void addBlocks(Vector<collisionObject> collisionList, Vector<drawableObject> drawingList)
 	{
-		int yFactor = 0;
-		int j = 0;
-		for(int i = 0; i < 10; i++)
+		int numberOfRows = 4;
+		int numberOfColumns = 8;
+		numberOfBlocks = numberOfRows * numberOfColumns;
+		int verticalSpacing = 10;
+		int horizontalSpacing = 10;
+		int initialY = 50;
+		for(int currentRow = 1; currentRow <= numberOfRows; currentRow++)
 		{
-			if((i % 5) == 0) 
+			for(int currentColumn = 1; currentColumn <= numberOfColumns; currentColumn++)
 			{
-				yFactor ++;
-				j = 0;
+				Block newBlock = new Block();
+				newBlock.x = currentColumn * (newBlock.blockWidth + horizontalSpacing);
+				newBlock.y = currentRow * (newBlock.blockHeight + verticalSpacing) + initialY;
+				collisionList.add(newBlock);
+				drawingList.add(newBlock);
 			}
-			Block newBlock = new Block();
-			newBlock.x = j * (80 + 10) + 80;
-			newBlock.y = 60 * yFactor;
-			collisionList.add(newBlock);
-			drawingList.add(newBlock);
-			j++;
 		}
+		
+
 	}
 
 }

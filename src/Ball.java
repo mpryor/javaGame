@@ -8,8 +8,8 @@ import javax.imageio.ImageIO;
 
 public class Ball extends collisionObject implements drawableObject, movingObject {
 
-	final int BALLWIDTH =  50;
-	final int BALLHEIGHT = 50;
+	int ballWidth;
+	int ballHeight;
 	boolean isJumping = false;
 	boolean moveLeft = false;
 	boolean moveRight = false;
@@ -28,14 +28,15 @@ public class Ball extends collisionObject implements drawableObject, movingObjec
 		xVelocity = INITIALXVELOCITY;
 		xAcceleration = 0;
 		yAcceleration = 0;
-		boundingWidth = 50;
-		boundingHeight = 50;
 		myGame = currentGame;	
 		try {
-			ballImage = ImageIO.read(new File("src/ball.png"));
-			
+			ballImage = ImageIO.read(new File("assets/ball.png"));			
 		} catch (IOException e) {
 		}	
+		ballWidth = ballImage.getWidth();
+		ballHeight = ballImage.getHeight();
+		boundingWidth = ballWidth;
+		boundingHeight = ballHeight;
 	}
 	
 	public void reset()
@@ -48,40 +49,27 @@ public class Ball extends collisionObject implements drawableObject, movingObjec
 
 	public void draw(Graphics2D g2)
 	{
-		/*
-	      g.setColor(Color.YELLOW);
-	      g.fillOval(x - (BALLWIDTH/2),(int)y - (BALLHEIGHT/2),BALLWIDTH,BALLHEIGHT);
-	      */
-		g2.drawImage(ballImage, x - (BALLWIDTH/2),(int)y - (BALLHEIGHT/2), null);
+		g2.drawImage(ballImage, x - (ballWidth/2),(int)y - (ballHeight/2), null);
 	}
+	
 	@Override
 	public void update()
 	{
-		yVelocity += yAcceleration;
-		if(isJumping)
+		if(myGame.magnetism)
 		{
-			yVelocity -= 10;
-			isJumping = false;
-		}
-		if(xVelocity > 0)
-		{
-			xVelocity += xAcceleration;
-			if(xVelocity < 0)
+			float magnetismFactor = (float)Math.abs(myGame.thePaddle.x - myGame.theBall.x) / (float)myGame.width;
+			if((myGame.thePaddle.x - myGame.theBall.x) > 0)
+			{
+				xVelocity = 30 * magnetismFactor;
+			}
+			else if((myGame.thePaddle.x - myGame.theBall.x) < 0)
+			{
+				xVelocity = -30 * magnetismFactor;
+			}
+			else
+			{
 				xVelocity = 0;
-		}
-		else if(xVelocity <  0)
-		{
-			xVelocity -= xAcceleration;
-			if(xVelocity > 0)
-				xVelocity = 0;
-		}
-		if(moveRight)
-		{
-			xVelocity = 5;
-		}
-		else if(moveLeft)
-		{
-			xVelocity = -5;
+			}
 		}
 	}
 
@@ -94,15 +82,15 @@ public class Ball extends collisionObject implements drawableObject, movingObjec
 		int rightSide = x + boundingWidth/2;
 		float bottom = y + boundingHeight / 2;
 		float top = y - boundingHeight / 2;
-		if((rightSide >= 500)||(leftSide <= 0))
+		if((rightSide >= myGame.width)||(leftSide <= 0))
 		{
 			if(leftSide <= 0)
 				x = boundingWidth / 2;
 			else
-				x = 500 - boundingWidth / 2;
+				x = myGame.width - boundingWidth / 2;
 			xVelocity = -xVelocity;
 		}
-		if((bottom >= 500)||(top <= 0))
+		if((bottom >= myGame.height)||(top <= 0))
 		{
 			if(top <= 0)
 			{

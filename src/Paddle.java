@@ -11,28 +11,40 @@ public class Paddle extends Block implements movingObject {
 	boolean movingRight;
 	boolean movingLeft;
 	int initialX = 246;
+	int collideImageDisplayTime;
 	BufferedImage paddleImage;
-	Paddle()
+	BufferedImage collideImage;
+	Game myGame;
+	Paddle(Game currentGame)
 	{
 		super();
-		this.blockWidth = 80;
-		this.boundingWidth = 80;
-		this.blockHeight = 10;
-		this.boundingHeight = 10;
+		myGame = currentGame;
+		collideImageDisplayTime = 0;
+		blockWidth = 80;
+		boundingWidth = 80;
+		blockHeight = 10;
+		boundingHeight = 10;
 		movingRight = false;
 		movingLeft = false;
 		try {
-			paddleImage = ImageIO.read(new File("src/paddle.png"));
-			
+			paddleImage = ImageIO.read(new File("assets/paddle.png"));
+			collideImage = ImageIO.read(new File("assets/paddle_bumped.png"));			
 		} catch (IOException e) {
 		}	
 	}
 	@Override
 	public void draw(Graphics2D g2)
 	{
-		g2.drawImage(paddleImage, x - (blockWidth/2),(int)y - (blockHeight/2), null);
+		if(collideImageDisplayTime == 0)
+			g2.drawImage(paddleImage, x - (blockWidth/2),(int)y - (blockHeight/2), null);
+		else
+			g2.drawImage(collideImage, x - (blockWidth/2),(int)y - (blockHeight/2), null);
 	}
 
+	public void setColliding()
+	{
+		collideImageDisplayTime = 10;		
+	}
 	public void reset()
 	{
 		x = initialX;		
@@ -45,17 +57,19 @@ public class Paddle extends Block implements movingObject {
 			xVelocity = -5;
 		else
 			xVelocity = 0;
+		if(collideImageDisplayTime > 0)
+			collideImageDisplayTime--;
 	}
 
 	@Override
 	public void move() {	
-		if((x + xVelocity) <= (500 - (blockWidth / 2)))
+		if((x + xVelocity) <= (myGame.width - (blockWidth / 2)))
 		{
 			x += xVelocity;		
 		}
 		else
 		{
-			x = 500 - blockWidth / 2;
+			x = myGame.width - blockWidth / 2;
 		}
 		if(!((x + xVelocity) >= (0 + (blockWidth / 2))))
 			x = 0 + blockWidth / 2;

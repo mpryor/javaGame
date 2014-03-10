@@ -6,9 +6,9 @@ import javax.swing.*;
 
 public class Main
 {
-	final static int WINDOWWIDTH = 600;
+	final static int WINDOWWIDTH = 900;
 	final static int WINDOWHEIGHT = 500;
-	static Game myGame = new Game();
+	static Game myGame = new Game(WINDOWWIDTH - 100, WINDOWHEIGHT);
 	
 	static Renderer gameRenderer = new Renderer(myGame);
 	
@@ -20,6 +20,8 @@ public class Main
 				myGame.thePaddle.movingLeft = true;
 			if(e.getKeyCode() == KeyEvent.VK_RIGHT)
 				myGame.thePaddle.movingRight = true;
+			if(e.getKeyCode() == KeyEvent.VK_CONTROL)
+				myGame.magnetism = true;
 		}
 		@Override
 		public void keyReleased(KeyEvent e) {
@@ -27,8 +29,9 @@ public class Main
 				myGame.thePaddle.movingLeft = false;
 			if(e.getKeyCode() == KeyEvent.VK_RIGHT)
 				myGame.thePaddle.movingRight = false;
-		}
-		
+			if(e.getKeyCode() == KeyEvent.VK_CONTROL)
+				myGame.magnetism = false;
+		}		
 		@Override
 		public void keyTyped(KeyEvent e) {}		
 	};

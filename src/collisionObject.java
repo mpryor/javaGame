@@ -39,7 +39,9 @@ public class collisionObject {
 							this.xVelocity = -this.xVelocity;
 							if(collisionList.elementAt(i) instanceof Paddle)
 							{
-								addAngularMomentum(collisionList.elementAt(i), myGame);					
+								addAngularMomentum(collisionList.elementAt(i), myGame);
+								Paddle currentPaddle = (Paddle)collisionList.elementAt(i);
+								currentPaddle.setColliding();
 							}
 						}
 						else if(verticalCollision)
@@ -47,7 +49,10 @@ public class collisionObject {
 							this.yVelocity = -this.yVelocity;
 							if(collisionList.elementAt(i) instanceof Paddle)
 							{
-								addAngularMomentum(collisionList.elementAt(i), myGame);		
+								addAngularMomentum(collisionList.elementAt(i), myGame);
+								Game.SoundEffect.PADDLE.play();
+								Paddle currentPaddle = (Paddle)collisionList.elementAt(i);
+								currentPaddle.setColliding();
 							}
 						}	
 						if((collisionList.elementAt(i) instanceof Block)&& !(collisionList.elementAt(i) instanceof Paddle))
@@ -59,7 +64,9 @@ public class collisionObject {
 							}
 							collisionList.remove(i);
 							myGame.blocksDestroyed++;
-						}
+							myGame.numberOfBlocks--;
+							Game.SoundEffect.BLOCK.play();
+						}						
 					}
 				}
 			}				
@@ -71,7 +78,7 @@ public class collisionObject {
 	{
 		int distanceFromCenter = otherObject.x - this.x;
 		float angleFactor = (float)distanceFromCenter / ((myGame.theBall.boundingWidth / 2) + (myGame.thePaddle.boundingWidth / 2));
-		this.xVelocity -= (angleFactor * 5.0f) ;			
+		this.xVelocity = (-angleFactor * 5.0f) ;			
 	}
 
 }

@@ -1,16 +1,15 @@
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 public class Block extends collisionObject implements drawableObject{
 	int blockWidth = 80;
-	int blockHeight = 50;
+	int blockHeight = 20;
 	Block()
 	{
 		x = 246;
 		y = 450;
-		boundingWidth = 80;
-		boundingHeight = 50;
+		boundingWidth = blockWidth;
+		boundingHeight = blockHeight;
 	}
 	
 	@Override

@@ -19,8 +19,9 @@ class Renderer extends JPanel{
 		g2.setColor(Color.black);
 		g2.fillRect(0,0,this.getWidth(), this.getHeight());
 		g2.setColor(Color.WHITE);
-		g2.fillRect(0,0,500,500);
+		g2.fillRect(0,0,myGame.width,myGame.height);
 	}
+	
 	
 	//Primary draw method
 	@Override
@@ -34,7 +35,7 @@ class Renderer extends JPanel{
       }
 	  g2.setColor(Color.WHITE);
 	  g2.setFont(new Font("TimesRoman", Font.PLAIN, 50)); 
-      g2.drawString(String.valueOf(myGame.blocksDestroyed), 520, 50);
-      g2.drawString(String.valueOf(myGame.lives), 520, 100);
+      g2.drawString(String.valueOf(myGame.blocksDestroyed), myGame.width + 20, 50);
+      g2.drawString(String.valueOf(myGame.lives), myGame.width + 20, 100);
     }        
 }
