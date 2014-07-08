@@ -1,3 +1,4 @@
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -57,6 +58,7 @@ public class Main
         gameRenderer.setFocusable(true); 
         gameRenderer.setDoubleBuffered(true);
         JFrame gameWindow=new JFrame();
+        gameWindow.setTitle("MPball");
         gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         gameWindow.getContentPane().add(gameRenderer);
         gameWindow.setSize(WINDOWWIDTH,WINDOWHEIGHT);
