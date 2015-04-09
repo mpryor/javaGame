@@ -6,7 +6,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 
-// New comment
+//Test 
 public class Ball extends collisionObject implements drawableObject, movingObject {
 
 	int ballWidth;
